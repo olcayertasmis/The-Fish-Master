@@ -14,9 +14,9 @@ namespace Hook
 
         private int _length;
         private int _strength;
-        private int _fisCount;
+        private int _fishCount;
 
-        private bool _canMove = false;
+        private bool _canMove;
 
         //List<Fish>
 
@@ -26,14 +26,9 @@ namespace Hook
         {
             _camera = Camera.main;
             _collider = gameObject.GetComponent<Collider2D>();
-            //List
+            //List<Fish>
         }
-
-        private void Start()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private void Update()
         {
             if (_canMove && Input.GetMouseButton(0))
@@ -44,6 +39,53 @@ namespace Hook
                 position.x = mousePos.x;
                 transform.position = position;
             }
+        }
+
+        public void StartFishing()
+        {
+            _length = -50; //Idle Manager
+            _strength = 3; //Idle Manager
+            _fishCount = 0;
+            float time = (-_length) * 0.1f;
+
+            _cameraTweener = _camera.transform.DOMoveY(_length, 1 + time * .25f, false).OnUpdate(delegate
+            {
+                if (_camera.transform.position.y <= -11) transform.SetParent(_camera.transform);
+            }).OnComplete(delegate
+            {
+                _collider.enabled = true;
+                _cameraTweener = _camera.transform.DOMoveY(0, time * 5, false).OnUpdate(delegate
+                {
+                    if (_camera.transform.position.y >= -25f) StopFishing();
+                });
+            });
+
+            //Screen(GAME)
+            _collider.enabled = false;
+            _canMove = true;
+            //Clear
+        }
+
+        private void StopFishing()
+        {
+            _canMove = false;
+            _cameraTweener.Kill(false);
+            _cameraTweener = _camera.transform.DOMoveY(0, 2, false).OnUpdate(delegate
+            {
+                if (_camera.transform.position.y >= -11)
+                {
+                    transform.SetParent(null);
+                    transform.position = new Vector2(transform.position.x, -6);
+                }
+            }).OnComplete(delegate
+            {
+                transform.position = Vector2.down * 6;
+                _collider.enabled = true;
+                int num = 0;
+                //Clearing out the hook from the fishes
+                //Idle Manager totalgain = num
+                //Screen manager end screen
+            });
         }
     }
 }
