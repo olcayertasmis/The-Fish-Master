@@ -31,10 +31,8 @@ namespace Fish
         private void Awake()
         {
             _collider = GetComponent<CircleCollider2D>();
-            _sprite = GetComponent<SpriteRenderer>();
+            _sprite = GetComponentInChildren<SpriteRenderer>();
             _screenLeft = Camera.main.ScreenToWorldPoint(Vector3.zero).x;
-            
-            ResetFish();
         }
 
         public void ResetFish()
@@ -49,13 +47,13 @@ namespace Fish
             position.x = _screenLeft;
             transform.position = position;
 
-            float num2 = 1;
-            float y = Random.Range(posY - num2, posY + num2);
-            Vector2 pos = new Vector2(-position.x, y);
+            float num1 = 1;
+            float newPosY = Random.Range(posY - num1, posY + num1);
+            Vector2 newPosition = new Vector2(-position.x, newPosY);
 
             float num3 = 3;
             float delay = Random.Range(0, 2 * num3);
-            _tweener = transform.DOMove(pos, num3, false).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear).SetDelay(delay).OnStepComplete(delegate
+            _tweener = transform.DOMove(newPosition, num3, false).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear).SetDelay(delay).OnStepComplete(delegate
             {
                 Vector3 localScale = transform.localScale;
                 localScale.x = -localScale.x;
