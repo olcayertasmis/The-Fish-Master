@@ -19,12 +19,12 @@ namespace Fish
 
         public Fish.FishType Type
         {
-            get { return Type; }
+            get { return _type; }
             set
             {
-                Type = value;
-                _collider.radius = Type.colliderRadius;
-                _sprite.sprite = Type.sprite;
+                _type = value;
+                _collider.radius = _type.colliderRadius;
+                _sprite.sprite = _type.sprite;
             }
         }
 

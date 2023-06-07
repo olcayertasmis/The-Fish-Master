@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using DG.Tweening;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Hook
 {
@@ -18,7 +22,7 @@ namespace Hook
 
         private bool _canMove;
 
-        //List<Fish>
+        private List<Fish.Fish> _hookedFishes;
 
         private Tweener _cameraTweener;
 
@@ -26,9 +30,9 @@ namespace Hook
         {
             _camera = Camera.main;
             _collider = gameObject.GetComponent<Collider2D>();
-            //List<Fish>
+            _hookedFishes = new List<Fish.Fish>();
         }
-        
+
         private void Update()
         {
             if (_canMove && Input.GetMouseButton(0))
@@ -63,7 +67,7 @@ namespace Hook
             //Screen(GAME)
             _collider.enabled = false;
             _canMove = true;
-            //Clear
+            _hookedFishes.Clear();
         }
 
         private void StopFishing()
@@ -82,10 +86,36 @@ namespace Hook
                 transform.position = Vector2.down * 6;
                 _collider.enabled = true;
                 int num = 0;
-                //Clearing out the hook from the fishes
+                for (int i = 0; i < _hookedFishes.Count; i++)
+                {
+                    _hookedFishes[i].transform.SetParent(null);
+                    _hookedFishes[i].ResetFish();
+                    num += _hookedFishes[i].Type.price;
+                }
                 //Idle Manager totalgain = num
                 //Screen manager end screen
             });
+        }
+
+        private void OnTriggerEnter2D(Collider2D target)
+        {
+            if (target.CompareTag("Fish") && _fishCount != _strength)
+            {
+                _fishCount++;
+
+                Fish.Fish fish = target.GetComponent<Fish.Fish>();
+                fish.Hooked();
+                _hookedFishes.Add(fish);
+
+                var targetT = target.transform;
+                targetT.SetParent(transform);
+                targetT.position = hookedTransform.position;
+                targetT.rotation = hookedTransform.rotation;
+                targetT.localScale = Vector3.one;
+
+                targetT.DOShakeRotation(5, Vector3.forward * 45, 10, 90, false).SetLoops(1, LoopType.Yoyo).OnComplete(delegate { targetT.rotation = Quaternion.identity; });
+                if (_fishCount == _strength) StopFishing();
+            }
         }
     }
 }
