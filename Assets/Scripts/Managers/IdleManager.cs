@@ -59,7 +59,7 @@ namespace Managers
             if (paused)
             {
                 DateTime now = DateTime.Now;
-                PlayerPrefs.SetString("Date", string.Empty);
+                PlayerPrefs.SetString("Date", now.ToString());
                 Debug.Log(now.ToString());
             }
             else
@@ -69,7 +69,7 @@ namespace Managers
                 {
                     DateTime date = DateTime.Parse(@string);
                     totalGain = (int)((DateTime.Now - date).TotalMinutes * offlineEarnings + 1.0);
-                    //ScreenManager Return
+                    ScreenManager.Instance.ChangeScreen(Screens.RETURN);
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Managers
             lengthCost = _costs[-length / 10 - 3];
             PlayerPrefs.SetInt("Length", -length);
             PlayerPrefs.SetInt("Wallet", wallet);
-            //Screen Manager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void BuyStrength()
@@ -96,7 +96,7 @@ namespace Managers
             strengthCost = _costs[strength - 3];
             PlayerPrefs.SetInt("Strength", strength);
             PlayerPrefs.SetInt("Wallet", wallet);
-            //Screen Manager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void BuyOfflineEarnings()
@@ -106,21 +106,21 @@ namespace Managers
             offlineEarningsCost = _costs[offlineEarnings - 3];
             PlayerPrefs.SetInt("OfflineEarnings", offlineEarnings);
             PlayerPrefs.SetInt("Wallet", wallet);
-            //Screen Manager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void CollectMoney()
         {
             wallet += totalGain;
             PlayerPrefs.SetInt("Wallet", wallet);
-            //Back to main
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void CollectDoubleMoney()
         {
             wallet += totalGain * 2;
             PlayerPrefs.SetInt("Wallet", wallet);
-            //Back to main
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
     }
 }

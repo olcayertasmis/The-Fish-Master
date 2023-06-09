@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using DG.Tweening;
+using Managers;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -47,8 +48,8 @@ namespace Hook
 
         public void StartFishing()
         {
-            _length = -50; //Idle Manager
-            _strength = 3; //Idle Manager
+            _length = IdleManager.Instance.length - 20;
+            _strength = IdleManager.Instance.strength;
             _fishCount = 0;
             float time = (-_length) * 0.1f;
 
@@ -64,7 +65,8 @@ namespace Hook
                 });
             });
 
-            //Screen(GAME)
+            ScreenManager.Instance.ChangeScreen(Screens.GAME);
+            
             _collider.enabled = false;
             _canMove = true;
             _hookedFishes.Clear();
@@ -92,8 +94,9 @@ namespace Hook
                     _hookedFishes[i].ResetFish();
                     num += _hookedFishes[i].Type.price;
                 }
-                //Idle Manager totalgain = num
-                //Screen manager end screen
+
+                IdleManager.Instance.totalGain = num;
+                ScreenManager.Instance.ChangeScreen(Screens.END);
             });
         }
 
