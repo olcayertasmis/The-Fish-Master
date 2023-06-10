@@ -7,31 +7,36 @@ namespace Managers
 {
     public class ScreenManager : MonoBehaviour
     {
+        [Header("Instance")]
         public static ScreenManager Instance;
 
-        private GameObject _currentScreen;
-
+        [Header("Screens")]
         public GameObject endScreen;
         public GameObject gameScreen;
         public GameObject mainScreen;
         public GameObject returnScreen;
+        private GameObject _currentScreen;
 
+        [Header("Buttons")]
         public Button lengthButton;
         public Button strengthButton;
         public Button offlineEarnsButton;
 
+        [Header("Feature Texts")]
         public TextMeshProUGUI lengthCostText;
         public TextMeshProUGUI lengthValueText;
         public TextMeshProUGUI strengthCostText;
         public TextMeshProUGUI strengthValueText;
         public TextMeshProUGUI offlineEarnCostText;
         public TextMeshProUGUI offlineEarnValueText;
+
+        [Header("Screen Money Texts")]
         public TextMeshProUGUI gameScreenMoneyText;
         public TextMeshProUGUI endScreenMoneyText;
         public TextMeshProUGUI returnScreenMoneyText;
 
+        [Header("Control")]
         private int _gameCount;
-
 
         private void Awake()
         {
@@ -103,10 +108,10 @@ namespace Managers
             int wallet = IdleManager.Instance.wallet;
 
             lengthButton.interactable = wallet >= lengthCost;
-            
+
             if (wallet < strengthCost) strengthButton.interactable = false;
             else strengthButton.interactable = true;
-            
+
             if (wallet < offlineEarningsCost) offlineEarnsButton.interactable = false;
             else offlineEarnsButton.interactable = true;
         }

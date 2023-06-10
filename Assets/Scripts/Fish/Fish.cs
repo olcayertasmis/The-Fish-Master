@@ -9,13 +9,12 @@ namespace Fish
     {
         private Fish.FishType _type;
 
+        [Header("Components")]
         private CircleCollider2D _collider;
-
         private SpriteRenderer _sprite;
+        private Tweener _tweener;
 
         private float _screenLeft;
-
-        private Tweener _tweener;
 
         public Fish.FishType Type
         {
@@ -82,5 +81,5 @@ namespace Fish
 
             public Sprite sprite;
         }
-    }
+    } //Class
 }

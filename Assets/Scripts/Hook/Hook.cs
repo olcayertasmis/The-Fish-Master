@@ -12,15 +12,17 @@ namespace Hook
 {
     public class Hook : MonoBehaviour
     {
+        [Header("Components")]
         [SerializeField] private Transform hookedTransform;
-
         private Collider2D _collider;
         private Camera _camera;
 
+        [Header("Fisherman Values")]
         private int _length;
         private int _strength;
         private int _fishCount;
 
+        [Header("Control")]
         private bool _canMove;
 
         private List<Fish.Fish> _hookedFishes;
@@ -66,7 +68,7 @@ namespace Hook
             });
 
             ScreenManager.Instance.ChangeScreen(Screens.GAME);
-            
+
             _collider.enabled = false;
             _canMove = true;
             _hookedFishes.Clear();

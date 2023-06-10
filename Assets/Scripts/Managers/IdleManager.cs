@@ -6,14 +6,18 @@ namespace Managers
 {
     public class IdleManager : MonoBehaviour
     {
+        [Header("Instance")]
         public static IdleManager Instance;
 
+        [Header("Features")]
         [HideInInspector] public int length;
         [HideInInspector] public int strength;
         [HideInInspector] public int offlineEarnings;
         [HideInInspector] public int lengthCost;
         [HideInInspector] public int strengthCost;
         [HideInInspector] public int offlineEarningsCost;
+        
+        [Header("Coin")]
         [HideInInspector] public int wallet;
         [HideInInspector] public int totalGain;
 
